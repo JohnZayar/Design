@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>အဝတ်အစား ကြော်ငြာ Prompt Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF0EE;--ink:#1B1F23;--mute:#5F6A70;--line:#CBD2CF;--jade:#1F6F5C;--gold:#E8B04A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 "Noto Sans Myanmar",system-ui,sans-serif}
+header,main{max-width:900px;margin:auto;padding:0 18px}
+header{padding-top:24px}h1{margin:0;font-size:26px;line-height:1.5}header p{margin:2px 0 12px;color:var(--mute)}
+section{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 8px;font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;font:inherit;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--jade);border-color:var(--jade);color:#fff}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+label{display:block;margin:10px 0 4px;font-weight:600}
+input[type=text],textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
+textarea{min-height:110px;resize:vertical;font-size:14px}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:14px;text-align:center;cursor:pointer;color:var(--mute)}
+.drop img{max-height:220px;max-width:100%;border-radius:8px;display:block;margin:8px auto 0}
+.sm{border:1px solid var(--jade);color:var(--jade);background:#fff;border-radius:8px;padding:4px 14px;font:inherit;cursor:pointer}
+.big{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:8px 16px;font:inherit;cursor:pointer}
+.card{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fafafa;margin-bottom:10px}
+.card b{display:block;margin-bottom:4px}
+.note{font-size:14px;color:var(--mute)}
+.tabs .chip{font-weight:700}
+details{margin-top:6px}summary{cursor:pointer;font-weight:600}ol{padding-left:22px;margin:6px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>အဝတ်အစား ကြော်ငြာ Prompt Studio</h1>
+  <p>Key မလိုပါ။ Prompt ထုတ်ပြီး Google Flow ထဲ Copy ကူးသုံးပါ။</p>
+</header>
+<main>
+<section>
+  <h2>၁။ အဝတ်အစစ်ပုံ တင်ပါ</h2>
+  <div class="drop" id="drop" tabindex="0" role="button"><span id="dropText">ဤနေရာကိုနှိပ်၍ အဝတ်အစစ်ပုံ ရွေးပါ</span><img id="prev" alt="" hidden></div>
+  <input type="file" id="file" accept="image/*" hidden>
+  <p class="note">အဝတ်တစ်ခုတည်း၊ အလင်းကောင်း၊ ခေါက်မထား၊ အရောင်မှန်မှန် ရိုက်ပါ။ ဤပုံကို Flow ထဲ အတူတင်ရမည်ဖြစ်၍ ဖုန်းထဲ သိမ်းထားပါ။</p>
+</section>
+
+<section>
+  <h2>၂။ အဝတ်အချက်အလက်</h2>
+  <div class="chips" id="gender"></div>
+  <div class="chips" id="garment"></div>
+  <label for="desc">အရောင်/ပုံစံ (မဖြည့်လည်းရ)</label>
+  <input type="text" id="desc" placeholder="e.g. red silk with small white flowers">
+</section>
+
+<section>
+  <h2>၃။ ကြော်ငြာပုံစံ</h2>
+  <div class="chips" id="person"></div>
+  <label>ရိုက်ပုံစံ</label><div class="chips" id="style"></div>
+  <div id="modelBox">
+    <label>မော်ဒယ်အမျိုးအစား</label><div class="chips" id="mpre"></div>
+    <label for="model">မော်ဒယ်ဖော်ပြချက် (ကိုယ်ပိုင်ပြင်နိုင်၊ ပုံတိုင်းတူစေရန် တစ်ခါပဲ သတ်မှတ်ပါ)</label>
+    <input type="text" id="model">
+  </div>
+  <label>နောက်ခံ</label><div class="chips" id="bg"></div>
+  <label>ပုံအချိုး</label><div class="chips" id="ratio"></div>
+</section>
+
+<section>
+  <div class="chips tabs" id="mode"></div>
+  <p class="note" id="modeNote"></p>
+  <div id="danceBox" hidden>
+    <label>ကမည့်အက (Video)</label><div class="chips" id="dance"></div>
+    <input type="text" id="dcustom" placeholder="ကိုယ်ပိုင် trend ရေးမည် e.g. simple hand wave step with a hip sway, repeating every 2 beats">
+    <p class="note">လက်ရှိ trend များ အမြန်ပြောင်းသဖြင့် TikTok/Reels တွင် ကြိုက်သောအကကို ကြည့်ပြီး လှုပ်ရှားပုံကို ဤကွက်တွင် ရေးနိုင်သည်။ သီချင်းကို Flow ထဲ မထည့်ဘဲ TikTok/Reels/CapCut ၏ ခွင့်ပြုထားသောသီချင်းကို Video တင်ချိန် ထည့်ပါ။</p>
+  </div>
+  <div id="list"></div>
+  <button class="big" id="all" type="button">အားလုံး Copy</button>
+</section>
+
+<section>
+  <h2>Flow ထဲမှာ သုံးနည်း</h2>
+  <details open><summary>ပုံ (အဝတ်မပြောင်းအောင်)</summary><ol>
+    <li>Flow ကိုဖွင့်၍ project အသစ်လုပ်ပါ။ Image ဖန်တီးရာ mode ကိုရွေးပါ။</li>
+    <li>အဝတ်အစစ်ပုံကို reference (Ingredient/ပုံထည့်ရန်) အဖြစ် တင်ပါ။</li>
+    <li>Prompt ကိုကူးထည့်ပြီး ထုတ်ပါ။ ၂-၄ ပုံထုတ်ခိုင်းပြီး အဝတ်နှင့် အနီးဆုံးကို ရွေးပါ။</li>
+    <li>မော်ဒယ်ပုံအတွက် အရှေ့ပုံကို အရင်ထုတ်ပါ။ အနောက်/ဘေးပုံတွင် အဝတ်ပုံ နှင့် ထုတ်ပြီးသော အရှေ့ပုံ နှစ်ပုံစလုံး reference တင်ပါ။ လူတူပြီး အဝတ်တူမည်။</li></ol></details>
+  <details><summary>Video</summary><ol>
+    <li>အရင်ဆုံး ပုံ Prompt နှင့် ကြော်ငြာပုံကောင်းကောင်း တစ်ပုံထုတ်ပါ။</li>
+    <li>Flow တွင် ထိုပုံကို Video ၏ Start frame အဖြစ်သုံးပြီး (Frames to Video) Video Prompt ထည့်ပါ။ စာသားမှ Video ထုတ်ခြင်းထက် အဝတ်ပုံစံ ပိုမပြောင်းပါ။</li>
+    <li>Video တစ်ခုက ၈ စက္ကန့်ခန့်သာ ရပါသည်။ Fast/Lite ဖြင့်စမ်း၊ ကြိုက်မှ Quality သုံးပါ။ Credit ချွေတာနိုင်သည်။</li></ol></details>
+  <p class="note">မှတ်ချက်: AI က အဝတ်ကို ၁၀၀% တူအောင် အာမခံမရပါ။ ဝယ်သူထံ မပို့မီ ပုံကို အဝတ်အစစ်နှင့် တိုက်စစ်ပါ (အရောင်၊ ပန်းရိုက်ပုံ၊ ဓာတ်ခွာ/ကြယ်သီး)။ မတူလျှင် ပုံပြန်ထုတ်ပါ။</p>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const GAR={
+ female:[
+  ["အင်္ကျီ","a blouse / top","plain simple neutral trousers","fabric moving gently"],
+  ["ထမိန်","a Myanmar htamein (ankle-length woven wrap skirt) with its neat front fold and waistband","a plain fitted neutral top","skirt swaying with each step"],
+  ["ဘောင်းဘီရှည်","a pair of long trousers","a plain fitted neutral top","trouser legs moving naturally"],
+  ["ဘောင်းဘီတို","a pair of shorts","a plain fitted neutral top","natural relaxed movement"],
+  ["ဂါဝန်","a dress / gown","no extra accessories","skirt flowing and swirling softly"],
+  ["စကပ်","a skirt","a plain fitted neutral top","skirt swaying and swirling softly"]],
+ male:[
+  ["အင်္ကျီ","a shirt","plain simple neutral trousers","fabric moving gently"],
+  ["ပုဆိုး","a Myanmar longyi (paso) tied at the waist with the traditional front fold","a plain white shirt","longyi cloth swaying naturally"],
+  ["ဘောင်းဘီရှည်","a pair of long trousers","a plain fitted neutral shirt","trouser legs moving naturally"],
+  ["ဘောင်းဘီတို","a pair of shorts","a plain fitted neutral shirt","natural relaxed movement"]]
+};
+const MODEL={female:"a young Myanmar woman, natural makeup, long black hair, elegant",male:"a young Myanmar man, short black hair, clean-cut, confident"};
+const BG=[["ဖြူစတူဒီယို","a clean seamless white studio backdrop, soft box lighting"],["ရွှေမီးစတူဒီယို","a warm beige studio backdrop with soft golden light"],["ရန်ကုန်လမ်း","a Yangon colonial-era street in soft morning light, blurred background"],["ဘုရားအနီး","near a golden pagoda in Myanmar at golden hour, blurred background"],["ကော်ဖီဆိုင်","a bright modern cafe interior with natural window light"],["ပန်းခြံ","a lush green garden with soft sunlight and bokeh"],["ကမ်းခြေ","a tropical beach at sunset, warm light"],["Luxury အိမ်တွင်း","a luxury minimalist interior with marble and warm lamps"]];
+const RATIO=[["4:5 (Facebook/IG)","4:5 vertical"],["9:16 (Reels/TikTok)","9:16 vertical"],["1:1 (Shop)","1:1 square"],["16:9","16:9 horizontal"]];
+const MODELS={
+ female:[["ငယ်ရွယ်ချော","a young Myanmar woman in her 20s, long black hair, natural makeup, elegant"],
+  ["လူလတ်","a Myanmar woman in her 30s, shoulder-length hair, warm friendly smile"],
+  ["ဝဝကစ်ကစ် (Plus-size)","a curvy plus-size Myanmar woman in her late 20s, confident, natural makeup"],
+  ["ပိန်ပိန်ရှည်ရှည်","a tall slim Myanmar woman with a high-fashion look, sleek short bob hair"],
+  ["အသားညို","a dark-skinned Myanmar woman in her 20s, radiant natural skin, curly hair"],
+  ["အသက်ကြီးပိုင်း","an elegant Myanmar woman in her 50s, silver-streaked hair, graceful"],
+  ["ဆံပင်တို","a young Myanmar woman with a short pixie haircut, stylish, cheerful"],
+  ["အားကစားသမား","an athletic toned Myanmar woman in her 20s, ponytail, energetic"]],
+ male:[["ငယ်ရွယ်ချော","a handsome young Myanmar man in his 20s, short black hair, clean-cut"],
+  ["လူလတ်","a Myanmar man in his 30s, neat hair, friendly confident smile"],
+  ["ဝဝကစ်ကစ်","a larger-built Myanmar man in his 30s, warm confident look, neat short hair"],
+  ["ပိန်ပိန်ရှည်ရှည်","a tall slim Myanmar man, modern fashion look, styled hair"],
+  ["အသားညို","a dark-skinned Myanmar man in his 20s, natural skin, short hair"],
+  ["အသက်ကြီးပိုင်း","a distinguished Myanmar man in his 50s, salt-and-pepper hair, dignified"],
+  ["ကြွက်သားကောင်း","a fit muscular Myanmar man in his late 20s, short hair"],
+  ["ဆံပင်ရှည်/မုတ်ဆိတ်","a Myanmar man with medium-length hair and a short neat beard, stylish"]]
+};
+const DANCES=[
+ ["K-pop စတိုင်","sharp, synchronized K-pop style choreography with clean arm and body point moves"],
+ ["TikTok လက်ကလေးလှုပ်","an easy, catchy TikTok-style loop of hand and arm moves with a light hip sway, repeating every two beats"],
+ ["Hip-hop Groove","a relaxed hip-hop groove with bouncing knees, shoulder rolls and confident swagger"],
+ ["Shuffle ခြေလှမ်း","fast, fun shuffle footwork with light bouncy steps"],
+ ["Cute Bounce","a cute playful bounce with shoulder bops, head tilts and a bright smile"],
+ ["Catwalk + Pose","a confident runway catwalk, stopping to strike a fashion pose, then turning"],
+ ["လှည့်ပတ်ကွက်","graceful spins and twirls that show the garment flowing"],
+ ["Beat Drop Pose","freezing into a new stylish pose on each beat, with quick changes between poses"],
+ ["ရိုးရာအက ဆန်ဆန်","graceful Myanmar classical-inspired dance with soft flowing hand and wrist movements and gentle footwork"],
+ ["Slow Sway","a relaxed slow sway with soft body movement and playful hair flip"]
+];
+const LOCK="Use the attached garment photo as the exact reference. Keep the garment 100% identical: same colour, print/pattern and its placement, fabric texture, neckline, sleeves, length, buttons and stitching. Do not redesign, recolour, simplify or add/remove any detail.";
+const REAL="Photorealistic professional commercial photography, realistic fabric folds, sharp focus, accurate colours, high detail. No text, no logo, no watermark, no distortion.";
+const PEOPLE="Natural skin texture, correct human anatomy and hands, natural proportions, 85mm lens, f/2.8.";
+const VLOCK="The garment must stay exactly as in the start frame: no morphing, no colour change, no pattern change. Realistic natural motion, smooth cinematic camera, no text, no watermark.";
+
+const S={gender:"female",g:0,person:"none",bg:0,ratio:0,mode:"img",hasImg:false,style:"phone",mi:0,di:0};
+
+const SHOTS=[
+ // ပုံ - လူမပါ
+ ["img","none","အဝတ်ခင်း (အပေါ်မှ)",(c)=>`Top-down flat-lay product photo of ${c.g}, neatly laid out and smoothed, all edges visible, on ${c.bg}. Soft even light.`],
+ ["img","none","မြင်ကွင်း (Invisible mannequin)",c=>`Invisible / ghost mannequin product photo of ${c.g}, showing its natural shape, front view, centred, on ${c.bg}.`],
+ ["img","none","ဟန်းဂါပေါ် ချိတ်ထား",c=>`${c.g} hanging on a wooden hanger, against ${c.bg}, soft natural light, gentle realistic drape.`],
+ ["img","none","အနီးကပ် အထည်/ချုပ်လုပ်",c=>`Extreme close-up macro shot of the fabric texture, weave, print and stitching of ${c.g}, shallow depth of field.`],
+ ["img","none","Lifestyle ပုံစံဆန်း",c=>`Editorial lifestyle product scene: ${c.g} folded or draped naturally with a few subtle props (small plant, ceramic cup), on ${c.bg}.`],
+ // ပုံ - လူပါ
+ ["img","model","မော်ဒယ် - အရှေ့ (ပထမဆုံးထုတ်ပါ)",c=>`Fashion advertisement photo of ${c.m} wearing ${c.g}, styled with ${c.pair}. Front view, facing the camera, full body, ${c.bg}. ${PEOPLE}`],
+ ["img","model","မော်ဒယ် - အနောက်",c=>`Fashion advertisement photo of the SAME model as in the second reference image, wearing ${c.g}, styled with ${c.pair}. Back view, turned away from the camera, full body, ${c.bg}. Same face, hair and body. ${PEOPLE}`],
+ ["img","model","မော်ဒယ် - ဘေး",c=>`Fashion advertisement photo of the SAME model as in the second reference image, wearing ${c.g}, styled with ${c.pair}. Side profile view, full body, ${c.bg}. Same face, hair and body. ${PEOPLE}`],
+ ["img","model","မော်ဒယ် - လမ်းလျှောက် (Candid)",c=>`Candid lifestyle fashion photo of the SAME model as in the second reference image, wearing ${c.g}, styled with ${c.pair}, walking naturally toward the camera, three-quarter view, ${c.bg}. ${PEOPLE}`],
+ ["img","model","မော်ဒယ် - အနီးကပ်အသေးစိတ်",c=>`Close-up fashion detail shot of the SAME model as in the second reference image, focusing on ${c.g} on the body, showing fit, fabric and stitching, ${c.bg}. ${PEOPLE}`],
+ // Video - လူမပါ
+ ["vid","none","Flat-lay နှေးနှေး Push-in",c=>`8 second product video. Start frame: ${c.g} laid out neatly. Slow smooth camera push-in, then a gentle drift across the fabric and details, soft light shifting subtly. ${c.vl}`],
+ ["vid","none","ဟန်းဂါပေါ် လေတိုက်",c=>`8 second product video. Start frame: ${c.g} on a hanger. A light breeze makes the fabric sway gently, slow camera push-in, soft natural light. ${c.vl}`],
+ ["vid","none","အထည်အနီးကပ် Pan",c=>`8 second macro product video. Slow camera pan across the fabric texture and stitching of ${c.g}, shallow depth of field. ${c.vl}`],
+ // Video - လူပါ
+ ["vid","model","လမ်းလျှောက်လာ + ပြုံး",c=>`8 second fashion commercial video. Start frame: the model wearing ${c.g}. She/he walks slowly and naturally toward the camera with confidence, ${c.mv}, then gives a soft smile. Smooth cinematic dolly-back camera. ${c.vl}`],
+ ["vid","model","လှည့်ပြ (အနောက်ပြ)",c=>`8 second fashion commercial video. Start frame: the model wearing ${c.g}, front view. The model slowly turns around to show the back of the garment, ${c.mv}, then looks back over the shoulder. Slow orbit camera. ${c.vl}`],
+ ["vid","model","လေတိုက်/ဝဲကြွ",c=>`8 second fashion commercial video. Start frame: the model wearing ${c.g}. A soft breeze, ${c.mv}. The model poses naturally with subtle graceful movement. Slow push-in camera. ${c.vl}`],
+ ["vid","model","အသေးစိတ်ဆီ Camera",c=>`8 second fashion detail video. Start frame: the model wearing ${c.g}. Camera slowly glides from the fabric detail up to the model's confident face and smile. ${c.vl}`]
+ ,["img","mannequin","အရုပ်မ - အရှေ့",c=>`Product photo of ${c.g} displayed on ${c.mq}, styled with ${c.pair}. Front view, full body, ${c.bg}.`],
+ ["img","mannequin","အရုပ်မ - အနောက်",c=>`Product photo of ${c.g} displayed on the SAME mannequin as in the second reference image, styled with ${c.pair}. Back view, full body, ${c.bg}.`],
+ ["img","mannequin","အရုပ်မ - ဘေး",c=>`Product photo of ${c.g} displayed on the SAME mannequin as in the second reference image, styled with ${c.pair}. Side view, full body, ${c.bg}.`],
+ ["img","mannequin","အရုပ်မ - ဆိုင်ပြတင်းပေါက်",c=>`Boutique shop-window display: ${c.g} on ${c.mq}, styled with ${c.pair}, soft spot lighting and a few subtle props, three-quarter view, ${c.bg}.`],
+ ["img","mannequin","အရုပ်မ - အနီးကပ်",c=>`Close-up of ${c.g} on ${c.mq}, showing the fit, fabric drape and stitching, ${c.bg}.`],
+ ["vid","mannequin","အရုပ်မ - ၃၆၀° လှည့်",c=>`8 second product video. Start frame: ${c.g} on a mannequin. The mannequin slowly rotates 360 degrees on a turntable to show front, side and back. ${c.vl}`],
+ ["vid","mannequin","အရုပ်မ - Camera လှည့်ပတ်",c=>`8 second product video. Start frame: ${c.g} on a mannequin. Camera slowly orbits around the mannequin, fabric shifting subtly in a light breeze. ${c.vl}`],
+ ["vid","mannequin","အရုပ်မ - ဆိုင်ပြတင်းပေါက် Push-in",c=>`8 second boutique window video. Start frame: ${c.g} on a mannequin. Slow camera push-in with soft lighting glints on the fabric. ${c.vl}`]
+];
+
+function chips(el,items,on,pick){el.innerHTML="";items.forEach((t,i)=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.setAttribute("aria-pressed",on(i));b.onclick=()=>{pick(i);draw()};el.appendChild(b)})}
+function looks(){return S.style==="phone"?"Natural candid look, shot on a smartphone, soft natural daylight, slight film grain, authentic real-life feel, lightly retouched, not over-polished. Accurate colours, realistic fabric folds. No text, no logo, no watermark.":REAL}
+function ctx(){
+ const G=GAR[S.gender][S.g],d=$("desc").value.trim(),r=RATIO[S.ratio][1];
+ return{g:d?`${G[1]} (${d})`:G[1],pair:G[2],mv:G[3],bg:BG[S.bg][1]+`, ${r} composition`,m:$("model").value.trim()||MODELS[S.gender][0][1],mq:`a full-body fashion display mannequin (matte neutral finish, ${S.gender==="female"?"female":"male"} form, smooth featureless head)`,vl:VLOCK+` Aspect ratio ${r}.`};
+}
+function draw(){
+ chips($("gender"),["မ","ကျား"],i=>S.gender===(i?"male":"female"),i=>{S.gender=i?"male":"female";S.g=0;S.mi=0;$("model").value=MODELS[S.gender][0][1]});
+ chips($("garment"),GAR[S.gender].map(x=>x[0]),i=>S.g===i,i=>S.g=i);
+ const PM=["none","mannequin","model"];
+ chips($("person"),["လူမပါ (အဝတ်သီးသန့်)","အရုပ်မဝတ်","လူပါ (မော်ဒယ်ဝတ်)"],i=>S.person===PM[i],i=>S.person=PM[i]);
+ chips($("style"),["ဖုန်းနှင့် ရိုက်သလို (သဘာဝကျ)","Studio ပရော်ဖက်ရှင်နယ်"],i=>S.style===(i?"studio":"phone"),i=>S.style=i?"studio":"phone");
+ $("modelBox").hidden=S.person!=="model";
+ chips($("mpre"),MODELS[S.gender].map(x=>x[0]),i=>S.mi===i,i=>{S.mi=i;$("model").value=MODELS[S.gender][i][1]});
+ $("danceBox").hidden=!(S.mode==="vid"&&S.person==="model");
+ chips($("dance"),DANCES.map(x=>x[0]),i=>S.di===i,i=>S.di=i);
+ chips($("bg"),BG.map(x=>x[0]),i=>S.bg===i,i=>S.bg=i);
+ chips($("ratio"),RATIO.map(x=>x[0]),i=>S.ratio===i,i=>S.ratio=i);
+ chips($("mode"),["ပုံအတွက် Prompt","Video အတွက် Prompt"],i=>S.mode===(i?"vid":"img"),i=>S.mode=i?"vid":"img");
+ $("modeNote").textContent=S.mode==="img"?"Flow ၏ ပုံ (Image) ထုတ်ရာတွင် အဝတ်ပုံနှင့်အတူ ထည့်ပါ။":"Video တွင် အရင်ထုတ်ထားသော ကြော်ငြာပုံကို Start frame အဖြစ်သုံးပါ။";
+ const list=$("list");list.innerHTML="";
+ if(!S.hasImg){list.innerHTML="<p class='note'>အဝတ်အစစ်ပုံကို အရင်တင်ပါ။ ထို့နောက် Prompt များပေါ်မည်။</p>";$("all").hidden=true;return}
+ $("all").hidden=false;
+ const c=ctx();
+ const rows=SHOTS.filter(s=>s[0]===S.mode&&s[1]===S.person);
+ if(S.mode==="vid"&&S.person==="model"){
+  const dc=$("dcustom").value.trim(),dd=dc||DANCES[S.di][1];
+  rows.unshift(["vid","model","အက Video: "+(dc?"ကိုယ်ပိုင်":DANCES[S.di][0]),c=>`8 second vertical social-media dance video. Start frame: the model wearing ${c.g}. The model dances to an upbeat beat: ${dd}. Full body always in frame including feet, static or lightly handheld camera, ${c.bg}. Natural human motion, correct anatomy, clear hands and feet, the garment moves realistically. Audio: upbeat instrumental pop beat, no vocals. ${c.vl}`]);
+ }
+ rows.forEach(s=>{
+  const p=s[3](c)+(s[0]==="img"?" "+LOCK+" "+looks():"");
+  const w=document.createElement("div");w.className="card";
+  w.innerHTML="<b></b><textarea></textarea><button type='button' class='sm'>Copy</button>";
+  w.querySelector("b").textContent=s[2];const t=w.querySelector("textarea");t.value=p;
+  w.querySelector("button").onclick=e=>{navigator.clipboard.writeText(t.value);e.target.textContent="Copied";setTimeout(()=>e.target.textContent="Copy",1200)};
+  list.appendChild(w);
+ });
+}
+$("all").onclick=e=>{navigator.clipboard.writeText([...document.querySelectorAll("#list textarea")].map(t=>t.value).join("\n\n"));e.target.textContent="Copied";setTimeout(()=>e.target.textContent="အားလုံး Copy",1200)};
+$("dcustom").oninput=draw;$("desc").oninput=draw;$("model").oninput=draw;$("model").value=MODELS.female[0][1];
+$("drop").onclick=()=>$("file").click();
+$("drop").onkeydown=e=>{if(e.key==="Enter"||e.key===" ")$("file").click()};
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{$("prev").src=r.result;$("prev").hidden=false;$("dropText").textContent="ပုံပြောင်းလိုလျှင် ထပ်နှိပ်ပါ";S.hasImg=true;draw()};r.readAsDataURL(f)};
+draw();
+</script>
+</body>
+</html>
